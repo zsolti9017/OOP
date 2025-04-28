@@ -4,11 +4,14 @@ class TicketBooking:
 
     def add_booking(self, Flight):
         self._bookings.append(Flight)
-        
+        Flight.available_seats -= 1      
 
     def cancel_booking(self, i):
         if 0 <= i < len(self._bookings):
+            Flight = self._bookings[i]
+            Flight.available_seats += 1
             del self._bookings[i]
+            
             
         else:
             print("Érvénytelen választás!")

@@ -10,17 +10,17 @@ class MainMenu:
         self._init_data()
 
     def _init_data(self):
-        self._airline.add_flight(DomesticFlight("W6-1234", "BUD-DEB", "Debrecen", 0.6, 15000,"2025-06-12"))
-        self._airline.add_flight(DomesticFlight("W6-1235", "BUD-PEC", "Pécs", 0.5, 10000,"2025-06-14"))
-        self._airline.add_flight(DomesticFlight("W6-1236", "BUD-SZE", "Szeged", 0.7, 12000,"2025-06-10"))
-        self._airline.add_flight(InternationalFlight("BA-789", "BUD-LHR", "London", 2.2, 50000,"2025-06-10"))
-        self._airline.add_flight(InternationalFlight("AA-456", "BUD-JFK", "New York", 10, 180000,"2025-06-01"))
-        self._airline.add_flight(InternationalFlight("SQ-321", "BUD-BEI", "Peking", 12.1, 210000,"2025-06-04"))
+        self._airline.add_flight(DomesticFlight("W6-1234", "BUD-DEB", "Debrecen", 0.6, 15000,"2025-06-12",10))
+        self._airline.add_flight(DomesticFlight("W6-1235", "BUD-PEC", "Pécs", 0.5, 10000,"2025-06-14",11))
+        self._airline.add_flight(DomesticFlight("W6-1236", "BUD-SZE", "Szeged", 0.7, 12000,"2025-06-10",3))
+        self._airline.add_flight(InternationalFlight("BA-789", "BUD-LHR", "London", 2.2, 50000,"2025-06-10",2))
+        self._airline.add_flight(InternationalFlight("AA-456", "BUD-JFK", "New York", 10, 180000,"2025-06-01",2))
+        self._airline.add_flight(InternationalFlight("SQ-321", "BUD-BEI", "Peking", 12.1, 210000,"2025-06-04",2))
         self._ticket_booking.add_booking(self._airline.flights[0])
         self._ticket_booking.add_booking(self._airline.flights[1])
-        self._ticket_booking.add_booking(self._airline.flights[2])
+        self._ticket_booking.add_booking(self._airline.flights[4])
         self._ticket_booking.add_booking(self._airline.flights[0])
-        self._ticket_booking.add_booking(self._airline.flights[2])
+        self._ticket_booking.add_booking(self._airline.flights[4])
         self._ticket_booking.add_booking(self._airline.flights[1])
 
 
@@ -43,19 +43,26 @@ class MainMenu:
             if choice == "1":
                 self._airline.list_flights()
                 input("\nNyomj Enter-t a folytatáshoz...")
+            
             elif choice == "2":
-                self._airline.list_flights()
-                while True:
+                while True: # Új külső ciklus a foglalásokhoz
+                    self._airline.list_flights() # Járatok listázása minden foglalás előtt
                     valasztas = input("\nAdd meg a foglalni kívánt járat sorszámát (0 a kilépéshez): ")
                     if valasztas == "0":
                         print("Visszatérés a főmenübe.")
                         break
                     try:
-                        i = int(valasztas) - 1
-                        if 0 <= i < len(self._airline.flights):
-                            self._ticket_booking.add_booking(self._airline.flights[i])
-                            print("Sikeres foglalás!")
-                            
+                        flight_index = int(valasztas) - 1
+                        if 0 <= flight_index < len(self._airline.flights):
+                            selected_flight = self._airline.flights[flight_index]
+                            while True:
+                                travel_date_str = input(f"Add meg a kívánt utazási dátumot ({selected_flight.departure_date}): ")
+                                if travel_date_str == selected_flight.departure_date:
+                                    self._ticket_booking.add_booking(selected_flight)
+                                    print("Sikeres foglalás!\n")
+                                    break
+                                else:
+                                    print(f"Ezen a napon ({travel_date_str}) nem indul ez a járat. Kérlek, add meg a helyes dátumot ({selected_flight.departure_date}).")
                         else:
                             print("Érvénytelen választás! Kérlek, adj meg egy érvényes sorszámot vagy 0 a kilépéshez.")
                     except ValueError:
@@ -72,8 +79,7 @@ class MainMenu:
                         elif 0 < i <= len(self._ticket_booking._bookings):
                             self._ticket_booking.cancel_booking(i - 1)
                             print("Sikeres lemondás!")
-                        else:
-                            print("Érvénytelen választás! Kérlek adj meg egy érvényes sorszámot.")
+
                     except ValueError:
                         print("Hibás bevitel! Kérlek adj meg egy számot.")     
                 
