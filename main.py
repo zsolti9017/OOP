@@ -66,8 +66,6 @@ class MainMenu:
                 elif 0 < i <= len(self._ticket_booking._bookings):
                     if self._ticket_booking.cancel_booking(i - 1):
                         print("Sikeres lemondás!")
-                    else:
-                        print("\n\033[31;40mA lemondás nem sikerült.\033[0m\n")
                 else:
                     print("\n\033[31;40mÉrvénytelen sorszám!\033[0m\n")
 
