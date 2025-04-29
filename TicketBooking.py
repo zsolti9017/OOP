@@ -1,5 +1,6 @@
 class TicketBooking:
     #Inicializáljuk a foglalások listáját
+    #Inicializáljuk a foglalások listáját
     def __init__(self):
         self._bookings = []
 
@@ -21,12 +22,16 @@ class TicketBooking:
         else:
             print("\033[31;40mÉrvénytelen foglalási szám!\033[0m")
             return False
+            print("\033[31;40mÉrvénytelen foglalási szám!\033[0m")
+            return False
 
+    #A foglalások listázása
     #A foglalások listázása
     def list_bookings(self):
         if not self._bookings:
             print("\033[31;40mNincsenek foglalások!\033[0m")
+            print("\033[31;40mNincsenek foglalások!\033[0m")
             return
         print("\nAktuális foglalások:")
-        for i, Flight in enumerate(self._bookings, start=1):
-            print(f"{i}. {Flight.flight_type()} - {Flight.flight_number} - {Flight.flight_code} -> {Flight.destination}, Ár: {Flight.price} Ft, Indulás: {Flight.departure_date}")
+        for i, flight in enumerate(self._bookings, start=1):
+            print(f"{i}. {flight.flight_type()} - {flight.flight_number} - {flight.flight_code} -> {flight.destination}, Ár: {flight.price} Ft, Indulás: {flight.departure_date}")
