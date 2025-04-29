@@ -1,24 +1,31 @@
 class TicketBooking:
+    #Inicializáljuk a foglalások listáját
     def __init__(self):
         self._bookings = []
 
+    #Hozzáad egy járatot a foglalásokhoz és csökkenti a szabad helyek számát
     def add_booking(self, Flight):
-        self._bookings.append(Flight)
-        Flight.available_seats -= 1      
+        if Flight.available_seats > 0:
+            self._bookings.append(Flight)
+            Flight.available_seats -= 1
+            return True
 
-    def cancel_booking(self, i):
-        if 0 <= i < len(self._bookings):
-            Flight = self._bookings[i]
+
+    #Töröl egy foglalást a listából és növeli a járaton a szabad helyek számát
+    def cancel_booking(self, booking_index):
+        if 0 <= booking_index < len(self._bookings):
+            Flight = self._bookings[booking_index]
             Flight.available_seats += 1
-            del self._bookings[i]
-            
-            
+            del self._bookings[booking_index]
+            return True
         else:
-            print("Érvénytelen választás!")
+            print("\033[31;40mÉrvénytelen foglalási szám!\033[0m")
+            return False
 
+    #A foglalások listázása
     def list_bookings(self):
         if not self._bookings:
-            print("Nincsenek foglalások!")
+            print("\033[31;40mNincsenek foglalások!\033[0m")
             return
         print("\nAktuális foglalások:")
         for i, Flight in enumerate(self._bookings, start=1):
